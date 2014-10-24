@@ -74,7 +74,16 @@ Protokoll und Sourcecodedokumentation [0..-6Pkt]
 \newpage
 \section{Design Consideration}
 \subsection{Creating an Entity-Relationship-Diagram}
-The first task would be to create an Entity-Relationship-Diagram to begin with. From this point on out we are able to discuss our current design concept. The next step would be to implement the whole idea into the already downloaded OracleXE Virtual Machine. But before that, the second task has to be fulfilled: you know it: Creating a Relational Model.
+The first task would be to create an Entity-Relationship-Diagram to begin with. From this point on out we are able to discuss our current design concept. The Issues we are going to test with our ER-Diagram are:
+
+\begin{itemize}
+	\item The synchronisation of splitted tables (Person,Mitarbeiter) <--> (Angestellter)
+	\item The synchronisation with columns which exits only in one Database (Mitarbeiter.jahranz) <--> /
+	\item The synchronisation of information which is splitted in one table (Person.vName, Person.nName) <--> (Angestellter.name)
+	
+\end{itemize}
+
+ The next step would be to implement the whole idea into the already downloaded OracleXE Virtual Machine. But before that, the second task has to be fulfilled: you know it: Creating a Relational Model.
 \subsection{Creating a Relational Model}
 The creation of the Relational-Model had to be done simultaneously to the creation of the ER-Diagram to save as much time humanly possible. The underline command will be very useful here to differ between Primary Keys and Foreign Keys. Creating the Relational Model will be an easy task, because we have direct intercommunication with each person working on this very application.
 

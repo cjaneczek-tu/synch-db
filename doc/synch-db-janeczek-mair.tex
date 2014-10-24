@@ -35,36 +35,37 @@
 
 Dokumentieren Sie Ihren Versuch zwei heterogene Datenbanksysteme (MySQL, Postgresql) zu synchronisieren. Verwenden Sie dabei unterschiedliche Schemata (verschiedene Tabellenstruktur) und zeigen Sie auf, welche Schwierigkeiten bei den unterschiedlichen Heterogenitätsgraden auftreten können (wie im Unterricht besprochen) [2Pkt].
 
-Implementieren Sie eigenständig eine geeignete Middleware [8Pkt]. Testen Sie Ihr gewähltes System mit mehr als einer Tabelle [4Pkt] (Synchronisation bei Einfügen, Ändern und Löschen von Einträgen) und dokumentieren Sie die Funktionsweise, sowie auch die Problematiken bzw. nicht abgedeckte Fälle [2Pkt].
+\noindent Implementieren Sie eigenständig eine geeignete Middleware [8Pkt]. Testen Sie Ihr gewähltes System mit mehr als einer Tabelle [4Pkt] (Synchronisation bei Einfügen, Ändern und Löschen von Einträgen) und dokumentieren Sie die Funktionsweise, sowie auch die Problematiken bzw. nicht abgedeckte Fälle [2Pkt].
 
-Das PDF soll ausführlich beschreiben, welche Annahmen getroffen wurden. Der Source-Code muss den allgemeinen Richtlinien entsprechen und ebenfalls abgegeben werden.
-
-Gruppengröße: 2
-Gesamtpunkte: 16 [Aufteilung in eckigen Klammern ersichtlich]
+\noindent Das PDF soll ausführlich beschreiben, welche Annahmen getroffen wurden. Der Source-Code muss den allgemeinen Richtlinien entsprechen und ebenfalls abgegeben werden.
+\newline\newline
+\noindent Gruppengröße: 2 
+\newline
+\noindent Gesamtpunkte: 16 [Aufteilung in eckigen Klammern ersichtlich]
 
 \subsection{Rating}
 
 Dokumentation der Synchronisation [2Pkt]
 
-Implementierung der Middleware [8Pkt]
+\noindent Implementierung der Middleware [8Pkt]
 
-Zeittrigger bzw. Listener für Synchronisation bzw. DBMS Logs
+\noindent Zeittrigger bzw. Listener für Synchronisation bzw. DBMS Logs
 Konfiguration bez. Mapping der Tabellen und Attribute
 Konfliktlösung bei Zeitüberschneidung bzw. Datenproblemen (Log)
 LostUpdate-Problem
 
-Test mit mehr als einer Tabelle und mindestens 10 Datensätze pro Tabelle [4Pkt]
+\noindent Test mit mehr als einer Tabelle und mindestens 10 Datensätze pro Tabelle [4Pkt]
 
-Uni- und Bidirektionale Änderungen mehrerer Tabellen
+\noindent Uni- und Bidirektionale Änderungen mehrerer Tabellen
 Einfügen, Ändern und Löschen
 
-Dokumenation der Funktionsweise, Problematiken und Problemfälle [2Pkt]
+\noindent Dokumenation der Funktionsweise, Problematiken und Problemfälle [2Pkt]
 
-Designdokumentation (Code + DB)
+\noindent Designdokumentation (Code + DB)
 Synchronisationsverhalten
 unbehandelte Problemfälle
 
-Protokoll und Sourcecodedokumentation [0..-6Pkt]
+\noindent Protokoll und Sourcecodedokumentation [0..-6Pkt]
 
 \newpage
 \section{Technology}
@@ -77,13 +78,16 @@ Protokoll und Sourcecodedokumentation [0..-6Pkt]
 The first task would be to create an Entity-Relationship-Diagram to begin with. From this point on out we are able to discuss our current design concept. The Issues we are going to test with our ER-Diagram are:
 
 \begin{itemize}
-	\item The synchronisation of splitted tables (Person,Mitarbeiter) <--> (Angestellter)
-	\item The synchronisation with columns which exits only in one Database (Mitarbeiter.jahranz) <--> /
-	\item The synchronisation of information which is splitted in one table (Person.vName, Person.nName) <--> (Angestellter.name)
+	\item The synchronisation of splitted tables\newline  (Person,Mitarbeiter)\textless--\textgreater  (Angestellter)
+	\item The synchronisation with columns which exits only in one Database \newline (Mitarbeiter.anzjahre)\textless--\textgreater (none)
+	\item The synchronisation of information which is splitted in one table \newline (Person.vName, Person.nName)\textless--\textgreater (Angestellter.name)
+	\item The synchronisation of columns with different datatypes \newline (Mitarbeiter.mongehalt - FLOAT)\textless--\textgreater (Angestellter.gehalt - DECIMAL)
+	\item The synchronisation of columns with different column-names \newline (Mitarbeiter.mongehalt)\textless--\textgreater (Angestellter.gehalt)
+	\item The synchronisation of two columns with the same name \newline (Mitarbeiter.wohnort)\textless--\textgreater (Angestellter.wohnort)
 	
 \end{itemize}
 
- The next step would be to implement the whole idea into the already downloaded OracleXE Virtual Machine. But before that, the second task has to be fulfilled: you know it: Creating a Relational Model.
+ \noindent The next step would be to implement the whole idea into the already downloaded OracleXE Virtual Machine. But before that, the second task has to be fulfilled: you know it: Creating a Relational Model.
 \subsection{Creating a Relational Model}
 The creation of the Relational-Model had to be done simultaneously to the creation of the ER-Diagram to save as much time humanly possible. The underline command will be very useful here to differ between Primary Keys and Foreign Keys. Creating the Relational Model will be an easy task, because we have direct intercommunication with each person working on this very application.
 

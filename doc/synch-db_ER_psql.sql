@@ -1,8 +1,8 @@
 
 \c template1
-DROP DATABASE IF EXISTS synch2;
-CREATE DATABASE synch2;
-\c synch2
+DROP DATABASE IF EXISTS synchdb;
+CREATE DATABASE synchdb;
+\c synchdb
 
 CREATE TABLE Person (
  id SERIAL,

@@ -69,13 +69,22 @@ unbehandelte Problemfälle
 
 \newpage
 \section{Technology}
+The simple but adventurous technology in this given task is known as the \textbf{Synchronization of Heterogenous Databases}. You might wonder: 'What exactly can I understand under the term Synchronization of Heterogenous Databases?' Come join me, while I explain everything to you.
+\newline \newline
+\noindent First of all, we have to decide how we are going to synchronize our two already existing databases. It was Bilbo Baggins' big goal, to finally see Elves again so he went straight to Rivendell. In our case, we have to choose our method of creating a bond between the two DBs. We have a slighty good disposal at our hands, so we decided to create a Middleware in Java, which should take on the job as Manager of our employees.
+\newline \newline
+\noindent That being said, if something should change at any of those two databases, may it be an INSERT to add some lovely new values to our tables, may it be an UPDATE to adjust/correct some mistakes we have done, or even if we have to fire one of our most trusted employees, the Middleware has got to create a layer of synchronicity. 
+
 \subsection{Example}
 
+\textbf{The following scenario:}\newline \newline
+In the last months of summer there was built a bank and you have got too much money in your purse.
+Consider the thought of adding some dollars, euros, pounds, yeng to your bank account. Wouldn't it be tragic if those added numbers aren't going to reach all the other databases with your highly loved money? To synchronize those values to one sum, we are in desperate need of the technology known as: \textbf{The Synchronization of Heterogenous Databases}
 
 \newpage
 \section{Design Consideration}
 \subsection{Creating an Entity-Relationship-Diagram}
-The first task would be to create an Entity-Relationship-Diagram to begin with. From this point on out we are able to discuss our current design concept. The Issues we are going to test with our ER-Diagram are:
+The first task would be to create an Entity-Relationship-Diagram to begin with. From this point on out we are able to discuss our current design concept. The issues we are going to test with our ER-Diagram are:
 
 \begin{itemize}
 	\item The synchronisation of splitted tables\newline  (Person,Mitarbeiter)\textless--\textgreater  (Angestellter)
@@ -90,6 +99,18 @@ The first task would be to create an Entity-Relationship-Diagram to begin with. 
  \noindent The next step would be to implement the whole idea into the already downloaded OracleXE Virtual Machine. But before that, the second task has to be fulfilled: you know it: Creating a Relational Model.
 \subsection{Creating a Relational Model}
 The creation of the Relational-Model had to be done simultaneously to the creation of the ER-Diagram to save as much time humanly possible. The underline command will be very useful here to differ between Primary Keys and Foreign Keys. Creating the Relational Model will be an easy task, because we have direct intercommunication with each person working on this very application.
+
+\subsection{Creating the specific DBMS-varying CREATE scripts}
+To fulfill the requirements, we have to somehow synchronize our two databases, which are located in two different Database Management Systems. But before that, we have to create our tables, which are then to be matched by either:
+\begin{itemize}
+	\item Full Extract and Delta
+	\item Trigger
+	\item Logging files
+	\item ...
+\end{itemize}
+\noindent The created databases look like the following: \newline \newline
+\textbf{MySQL} Abteilung(id:INT, name:VARCHAR, PK(id)) , Angestellter(id:INT, name:VARCHAR, gehalt:DECIMAL, anzjahre:INT, wohnort:VARCHAR, abteilung:INT, PK(id), FK(Abteilung.id)) \newline \newline
+\textbf{postgreSQL} Person(id:SERIAL, vName:VARCHAR, nName:VARCHAR, wohnort:VARCHAR, PK(id)) , Mitarbeiter(id:SERIAL, mongehalt:FLOAT, idPerson:INT, PK(id), FK(Person.id))
 
 \newpage
 \section{Apportionment of work with effort estimation}

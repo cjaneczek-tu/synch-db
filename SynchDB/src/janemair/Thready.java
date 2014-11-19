@@ -44,8 +44,13 @@ public class Thready implements Runnable{
 				//Change other table and update changed back
 				this.rs = befehlAbfrage(st1, "SELECT * FROM person where id = "+changeId+";");
 				this.rowEntry = getRow(rs);
-				befehlAbfrage(st2, "UPDATE angestellter SET name = '"+rowEntry[2]+"' '"+rowEntry[3]+"' and wohnort = '"+rowEntry[4]+"' where id = "+changeId+";");
-				befehlAbfrage(st1, "UPDATE person SET version = -1 where id = "+changeId+";");
+				System.out.println(rowEntry[0]);
+				System.out.println(rowEntry[1]);
+				System.out.println(rowEntry[2]);
+				System.out.println(rowEntry[3]);
+				System.out.println(rowEntry[4]);
+				st2.executeUpdate("UPDATE Angestellter SET name = '"+rowEntry[1]+" "+rowEntry[2]+"', wohnort = '"+rowEntry[3]+"' where id = "+changeId+";");
+				st1.executeUpdate("UPDATE person SET version = -1 where id = "+changeId+";");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -94,6 +99,7 @@ public class Thready implements Runnable{
 
 			//Den Inhalt der Tabellenmodel speichern
 			row = new String[colCount];
+			rs.next();
 			for (int i = 1; i <= colCount; i++) {
 				row[i - 1] = rs.getString(i);
 			}

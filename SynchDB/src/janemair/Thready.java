@@ -19,13 +19,13 @@ public class Thready implements Runnable{
 
 	public Thready (Connection con1, Connection con2, Statement st1, Statement st2){
 
-		this.con1 = con1;
-		this.con2 = con2;
+		this.setCon1(con1);
+		this.setCon2(con2);
 		this.st1 = st1;
 		this.st2 = st2;
-		this.rs = befehlAbfrage(st1, "SELECT * FROM Person;");
+		this.rs = befehlAbfrage(st1, "SELECT * FROM person;");
 		idList.add(this.getIds(rs));
-		this.rs = befehlAbfrage(st1, "SELECT * FROM Mitarbeiter;");
+		this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter;");
 		idList.add(this.getIds(rs));
 		this.rs = befehlAbfrage(st2, "SELECT * FROM Abteilung;");
 		idList.add(this.getIds(rs));
@@ -36,16 +36,16 @@ public class Thready implements Runnable{
 	@Override
 	public void run() {
 
-		this.rs = befehlAbfrage(st1, "SELECT * FROM Person;");
+		this.rs = befehlAbfrage(st1, "SELECT * FROM person;");
 
 		try {
 			changeId = this.searchChange(this.rs);
 			if(changeId != -1){
 				//Change other table and update changed back
-				this.rs = befehlAbfrage(st1, "SELECT * FROM Person where id = "+changeId+";");
+				this.rs = befehlAbfrage(st1, "SELECT * FROM person where id = "+changeId+";");
 				this.rowEntry = getRow(rs);
-				befehlAbfrage(st2, "UPDATE Angestellter SET name = '"+rowEntry[2]+"' '"+rowEntry[3]+"' and wohnort = '"+rowEntry[4]+"' where id = "+changeId+";");
-				befehlAbfrage(st1, "UPDATE Person SET version = -1 where id = "+changeId+";");
+				befehlAbfrage(st2, "UPDATE angestellter SET name = '"+rowEntry[2]+"' '"+rowEntry[3]+"' and wohnort = '"+rowEntry[4]+"' where id = "+changeId+";");
+				befehlAbfrage(st1, "UPDATE person SET version = -1 where id = "+changeId+";");
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -144,5 +144,21 @@ public class Thready implements Runnable{
 			System.out.println("Error: "+sqle.getMessage());
 			return null;
 		}
+	}
+
+	public Connection getCon1() {
+		return con1;
+	}
+
+	public void setCon1(Connection con1) {
+		this.con1 = con1;
+	}
+
+	public Connection getCon2() {
+		return con2;
+	}
+
+	public void setCon2(Connection con2) {
+		this.con2 = con2;
 	}
 }

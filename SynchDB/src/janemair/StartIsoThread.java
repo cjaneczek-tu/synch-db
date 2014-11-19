@@ -18,8 +18,6 @@ public class StartIsoThread {
 		Statement st1 = null, st2 = null;
 		Thread th;
 
-		Thread t1 = null,t2 = null;
-
 		CLI cli = new CLI(args);
 
 		System.out.println("TRICKY START!");

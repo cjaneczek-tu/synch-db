@@ -8,6 +8,11 @@ import java.util.ArrayList;
 
 import java.sql.Connection;
 
+/**
+ * 
+ * @author Christian Janeczek, Wolfgang Mair
+ * @version 2014-11-19
+ */
 public class Thready implements Runnable{
 
 	private Connection con1 = null, con2 = null;

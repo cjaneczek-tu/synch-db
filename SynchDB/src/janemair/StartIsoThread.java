@@ -6,7 +6,11 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-
+/**
+ * 
+ * @author Christian Janeczek, Wolfgang Mair
+ * @version 2014-11-19
+ */
 public class StartIsoThread {
 	public static void main(String[] args){
 

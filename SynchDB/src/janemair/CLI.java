@@ -9,7 +9,7 @@ import org.apache.commons.cli2.commandline.Parser;
  * Eine Klasse die das öffnen des Programmes mittels Anfangsparameter ermoeglicht
  * 
  * @author Wolfgang Mair
- * @version 2013-11-20
+ * @version 2014-11-12
  */
 public class CLI {
 	//Vorbereiten der Attribute

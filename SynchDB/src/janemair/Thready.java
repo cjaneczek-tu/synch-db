@@ -5,7 +5,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import java.sql.Connection;
 
 /**
@@ -39,56 +38,64 @@ public class Thready implements Runnable{
 	@Override
 	public void run() {
 
-		this.rs = befehlAbfrage(st1, "SELECT * FROM person;");
+		while(true){
 
-		try {
-			changeId = this.searchChange(this.rs);
-			if(changeId != -1){
-				//Change other table and update changed back
-				this.rs = befehlAbfrage(st1, "SELECT * FROM person where id = "+changeId+";");
-				this.rowEntry = getRow(rs);
-				st2.executeUpdate("UPDATE Angestellter SET name = '"+rowEntry[1]+" "+rowEntry[2]+"', wohnort = '"+rowEntry[3]+"' where id = "+changeId+";");
-				st1.executeUpdate("UPDATE person SET version = -1 where id = "+changeId+";");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter;");
-		
-		try {
-			changeId = this.searchChange(this.rs);
-			if(changeId != -1){
-				//Change other table and update changed back
-				this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter where id = "+changeId+";");
-				this.rowEntry = getRow(rs);
-				st2.executeUpdate("UPDATE Angestellter SET gehalt = "+rowEntry[1]+" where id = "+changeId+";");
-				st1.executeUpdate("UPDATE mitarbeiter SET version = -1 where id = "+changeId+";");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter;");
-		
-		try {
-			changeId = this.searchChange(this.rs);
-			if(changeId != -1){
-				//Change other table and update changed back
-				this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter where id = "+changeId+";");
-				this.rowEntry = getRow(rs);
-				String[] name = rowEntry[1].split(" ");
-				st1.executeUpdate("UPDATE person SET vName = '"+name[0]+"', Nname = '"+name[1]+"', wohnort = '"+rowEntry[4]+"' where id = "+changeId+";");
-				st1.executeUpdate("UPDATE mitarbeiter SET mongehalt = "+rowEntry[2]+" where id = "+changeId+";");
-				st2.executeUpdate("UPDATE Angestellter SET version = -1 where id = "+changeId+";");
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+			this.rs = befehlAbfrage(st1, "SELECT * FROM person;");
 
-		// the same for the other tables
-		// Check row count for inserts and deletes
+			try {
+				changeId = this.searchChange(this.rs);
+				if(changeId != -1){
+					//Change other table and update changed back
+					this.rs = befehlAbfrage(st1, "SELECT * FROM person where id = "+changeId+";");
+					this.rowEntry = getRow(rs);
+					st2.executeUpdate("UPDATE Angestellter SET name = '"+rowEntry[1]+" "+rowEntry[2]+"', wohnort = '"+rowEntry[3]+"' where id = "+changeId+";");
+					st1.executeUpdate("UPDATE person SET version = -1 where id = "+changeId+";");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 
+			this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter;");
+
+			try {
+				changeId = this.searchChange(this.rs);
+				if(changeId != -1){
+					//Change other table and update changed back
+					this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter where id = "+changeId+";");
+					this.rowEntry = getRow(rs);
+					st2.executeUpdate("UPDATE Angestellter SET gehalt = "+rowEntry[1]+" where id = "+changeId+";");
+					st1.executeUpdate("UPDATE mitarbeiter SET version = -1 where id = "+changeId+";");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter;");
+
+			try {
+				changeId = this.searchChange(this.rs);
+				if(changeId != -1){
+					//Change other table and update changed back
+					this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter where id = "+changeId+";");
+					this.rowEntry = getRow(rs);
+					String[] name = rowEntry[1].split(" ");
+					st1.executeUpdate("UPDATE person SET vName = '"+name[0]+"', Nname = '"+name[1]+"', wohnort = '"+rowEntry[4]+"' where id = "+changeId+";");
+					st1.executeUpdate("UPDATE mitarbeiter SET mongehalt = "+rowEntry[2]+" where id = "+changeId+";");
+					st2.executeUpdate("UPDATE Angestellter SET version = -1 where id = "+changeId+";");
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+			// the same for the other tables
+			// Check row count for inserts and deletes
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**

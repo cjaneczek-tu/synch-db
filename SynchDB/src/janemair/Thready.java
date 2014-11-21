@@ -40,7 +40,55 @@ public class Thready implements Runnable{
 
 		while(true){
 
+
+
+
 			this.rs = befehlAbfrage(st1, "SELECT * FROM person;");
+
+
+			if(idList.get(0).size() < (this.getIds(this.rs)).size()){
+
+
+
+				for(Integer id : this.getIds(this.rs)){
+					if(!idList.get(0).contains(id)){
+
+						try {
+							this.rs = befehlAbfrage(st1, "SELECT * FROM person where id = "+id+";");
+							this.rowEntry = getRow(rs);
+							st2.executeUpdate("INSERT INTO Angestellter VALUES ("+id+",'"+rowEntry[1]+" "+rowEntry[2]+"',0,0,'"+rowEntry[3]+"',);");
+							st1.executeUpdate("UPDATE person SET version = -1 where id = "+id+";");
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+				}
+				this.idList.set(0, this.getIds(this.rs));
+			}
+
+
+			if(idList.get(0).size() > (this.getIds(this.rs)).size()){
+
+				for(Integer id : this.idList.get(0)){
+					if(!this.getIds(this.rs).contains(id)){
+
+						try {
+							st1.executeUpdate("DELETE FROM mitarbeiter where idPerson = "+id+";");
+							st2.executeUpdate("DELETE FROM Angestellter where id = "+id+";");
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+				}
+
+				this.idList.set(0, this.getIds(this.rs));
+			}
+
+
 
 			try {
 				changeId = this.searchChange(this.rs);
@@ -54,8 +102,58 @@ public class Thready implements Runnable{
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
+			
+			
+			
+			
+			
+			
+			
 
 			this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter;");
+
+
+			if(idList.get(1).size() < (this.getIds(this.rs)).size()){
+
+
+				for(Integer id : this.getIds(this.rs)){
+					if(!idList.get(1).contains(id)){
+
+						try {
+							this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter where id = "+id+";");
+							this.rowEntry = getRow(rs);
+							st2.executeUpdate("INSERT INTO Angestellter VALUES ("+id+",,"+rowEntry[1]+",0,,);");
+							st1.executeUpdate("UPDATE mitarbeiter SET version = -1 where id = "+id+";");
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+				}
+				this.idList.set(1, this.getIds(this.rs));
+			}
+
+
+			if(idList.get(1).size() > (this.getIds(this.rs)).size()){
+
+				for(Integer id : this.idList.get(1)){
+					if(!this.getIds(this.rs).contains(id)){
+
+						try {
+							st2.executeUpdate("DELETE FROM Angestellter where id = "+id+";");
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+				}
+
+				this.idList.set(1, this.getIds(this.rs));
+			}
+
+
 
 			try {
 				changeId = this.searchChange(this.rs);
@@ -70,7 +168,60 @@ public class Thready implements Runnable{
 				e.printStackTrace();
 			}
 
+
+
+			
+			
+			
+			
+			
+			
+			
 			this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter;");
+
+
+			if(idList.get(2).size() < (this.getIds(this.rs)).size()){
+
+
+
+				for(Integer id : this.getIds(this.rs)){
+					if(!idList.get(2).contains(id)){
+						String[] name = rowEntry[1].split(" ");
+						try {
+							this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter where id = "+id+";");
+							this.rowEntry = getRow(rs);
+							st1.executeUpdate("INSERT INTO Person VALUES ("+id+",'"+name[0]+"','"+name[1]+"','"+rowEntry[4]+"');");
+							st1.executeUpdate("INSERT INTO Person VALUES ("+id+","+rowEntry[2]+","+id+");");
+							st2.executeUpdate("UPDATE Angestellter SET version = -1 where id = "+id+";");
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+				}
+				this.idList.set(2, this.getIds(this.rs));
+			}
+
+			
+			if(idList.get(2).size() > (this.getIds(this.rs)).size()){
+
+				for(Integer id : this.idList.get(2)){
+					if(!this.getIds(this.rs).contains(id)){
+
+						try {
+							st1.executeUpdate("DELETE FROM mitarbeiter where idPerson = "+id+";");
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
+					}
+				}
+
+				this.idList.set(2, this.getIds(this.rs));
+			}
+
 
 			try {
 				changeId = this.searchChange(this.rs);

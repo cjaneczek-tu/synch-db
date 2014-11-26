@@ -27,11 +27,11 @@ public class Thready implements Runnable{
 		this.setCon2(con2);
 		this.st1 = st1;
 		this.st2 = st2;
-		this.rs = befehlAbfrage(st1, "SELECT * FROM person;");
+		this.rs = befehlAbfrage(st1, "SELECT * FROM person;", con1);
 		idList.add(this.getIds(rs));
-		this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter;");
+		this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter;", con1);
 		idList.add(this.getIds(rs));
-		this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter;");
+		this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter;", con2);
 		idList.add(this.getIds(rs));
 	}
 
@@ -43,8 +43,7 @@ public class Thready implements Runnable{
 
 
 
-			this.rs = befehlAbfrage(st1, "SELECT * FROM person;");
-
+			this.rs = befehlAbfrage(st1, "SELECT * FROM person;", con1);
 
 			if(idList.get(0).size() < (this.getIds(this.rs)).size()){
 
@@ -54,7 +53,7 @@ public class Thready implements Runnable{
 					if(!idList.get(0).contains(id)){
 
 						try {
-							this.rs = befehlAbfrage(st1, "SELECT * FROM person where id = "+id+";");
+							this.rs = befehlAbfrage(st1, "SELECT * FROM person where id = "+id+";", con1);
 							this.rowEntry = getRow(rs);
 							st2.executeUpdate("INSERT INTO Angestellter VALUES ("+id+",'"+rowEntry[1]+" "+rowEntry[2]+"',0,0,'"+rowEntry[3]+"',);");
 							st1.executeUpdate("UPDATE person SET version = -1 where id = "+id+";");
@@ -67,7 +66,6 @@ public class Thready implements Runnable{
 				}
 				this.idList.set(0, this.getIds(this.rs));
 			}
-
 
 			if(idList.get(0).size() > (this.getIds(this.rs)).size()){
 
@@ -94,7 +92,7 @@ public class Thready implements Runnable{
 				changeId = this.searchChange(this.rs);
 				if(changeId != -1){
 					//Change other table and update changed back
-					this.rs = befehlAbfrage(st1, "SELECT * FROM person where id = "+changeId+";");
+					this.rs = befehlAbfrage(st1, "SELECT * FROM person where id = "+changeId+";", con1);
 					this.rowEntry = getRow(rs);
 					st2.executeUpdate("UPDATE Angestellter SET name = '"+rowEntry[1]+" "+rowEntry[2]+"', wohnort = '"+rowEntry[3]+"' where id = "+changeId+";");
 					st1.executeUpdate("UPDATE person SET version = -1 where id = "+changeId+";");
@@ -110,7 +108,7 @@ public class Thready implements Runnable{
 			
 			
 
-			this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter;");
+			this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter;", con1);
 
 
 			if(idList.get(1).size() < (this.getIds(this.rs)).size()){
@@ -120,7 +118,7 @@ public class Thready implements Runnable{
 					if(!idList.get(1).contains(id)){
 
 						try {
-							this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter where id = "+id+";");
+							this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter where id = "+id+";", con1);
 							this.rowEntry = getRow(rs);
 							st2.executeUpdate("INSERT INTO Angestellter VALUES ("+id+",,"+rowEntry[1]+",0,,);");
 							st1.executeUpdate("UPDATE mitarbeiter SET version = -1 where id = "+id+";");
@@ -136,11 +134,11 @@ public class Thready implements Runnable{
 
 
 			if(idList.get(1).size() > (this.getIds(this.rs)).size()){
-
 				for(Integer id : this.idList.get(1)){
 					if(!this.getIds(this.rs).contains(id)){
 
 						try {
+							System.out.println(idList.get(1).size());
 							st2.executeUpdate("DELETE FROM Angestellter where id = "+id+";");
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
@@ -159,7 +157,7 @@ public class Thready implements Runnable{
 				changeId = this.searchChange(this.rs);
 				if(changeId != -1){
 					//Change other table and update changed back
-					this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter where id = "+changeId+";");
+					this.rs = befehlAbfrage(st1, "SELECT * FROM mitarbeiter where id = "+changeId+";", con1);
 					this.rowEntry = getRow(rs);
 					st2.executeUpdate("UPDATE Angestellter SET gehalt = "+rowEntry[1]+" where id = "+changeId+";");
 					st1.executeUpdate("UPDATE mitarbeiter SET version = -1 where id = "+changeId+";");
@@ -177,7 +175,7 @@ public class Thready implements Runnable{
 			
 			
 			
-			this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter;");
+			this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter;", con2);
 
 
 			if(idList.get(2).size() < (this.getIds(this.rs)).size()){
@@ -188,7 +186,7 @@ public class Thready implements Runnable{
 					if(!idList.get(2).contains(id)){
 						String[] name = rowEntry[1].split(" ");
 						try {
-							this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter where id = "+id+";");
+							this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter where id = "+id+";", con2);
 							this.rowEntry = getRow(rs);
 							st1.executeUpdate("INSERT INTO Person VALUES ("+id+",'"+name[0]+"','"+name[1]+"','"+rowEntry[4]+"');");
 							st1.executeUpdate("INSERT INTO Person VALUES ("+id+","+rowEntry[2]+","+id+");");
@@ -227,7 +225,7 @@ public class Thready implements Runnable{
 				changeId = this.searchChange(this.rs);
 				if(changeId != -1){
 					//Change other table and update changed back
-					this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter where id = "+changeId+";");
+					this.rs = befehlAbfrage(st2, "SELECT * FROM Angestellter where id = "+changeId+";", con2);
 					this.rowEntry = getRow(rs);
 					String[] name = rowEntry[1].split(" ");
 					st1.executeUpdate("UPDATE person SET vName = '"+name[0]+"', Nname = '"+name[1]+"', wohnort = '"+rowEntry[4]+"' where id = "+changeId+";");
@@ -329,10 +327,11 @@ public class Thready implements Runnable{
 	 * @param befehl Die SQL abfrage
 	 * @return   Das dadurch entstandene Resultset
 	 */
-	private ResultSet befehlAbfrage(Statement st, String befehl){
+	private ResultSet befehlAbfrage(Statement st, String befehl, Connection con){
 		//Abarbeiten des Befehles
 		try{
-			return rs = st.executeQuery(befehl);
+			return rs = con.createStatement().executeQuery(befehl);
+//			return rs = st.executeQuery(befehl);
 		}
 		catch(SQLException sqle){
 			System.out.println("Error: "+sqle.getMessage());
